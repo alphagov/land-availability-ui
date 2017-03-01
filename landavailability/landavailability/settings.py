@@ -25,7 +25,7 @@ SECRET_KEY = 'v8q^p#^661*^0llwj8*jnt7xx^*%hx29)qno_qunv-^v3pdonn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['e5e9df78.ngrok.io']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,6 +45,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'webclient.middleware.BasicAuthenticationMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -125,3 +126,6 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+HTTP_USERNAME = os.environ.get('HTTP_USERNAME')
+HTTP_PASSWORD = os.environ.get('HTTP_PASSWORD')
