@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block pageheading %}
 Find available sites
 {% endblock %}
 
 {% block optional_head %}
-      <link href="{{ url_for('static', filename='vendor/chosen/chosen.min.css')}}" media="all" rel="stylesheet" type="text/css" />
-      <script src="{{ url_for('static', filename='vendor/chosen/chosen.jquery.min.js')}}" type="text/javascript"></script>
+      <link href="{% static "vendor/chosen/chosen.min.css" %}" media="all" rel="stylesheet" type="text/css" />
+      <script src="{% static "vendor/chosen/chosen.jquery.min.js" %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
@@ -24,7 +24,7 @@ Find available sites
       There was a problem when submitting the form
   </h1>
 
-  {% for k, v in errors.items() %}
+  {% for k, v in errors.items %}
   <p>
     {{v}}
   </p>
@@ -108,7 +108,7 @@ Find available sites
                     eg Utilities, Green Space, Transport Links
                 </span>
 
-                {% for attribute in terms.attributes or [''] %}
+                {% for attribute in terms.attributes %}
                 <div class="form-group attribute">
                     <input type="text" class="form-control" name="attributes" value="{{attribute}}"/>
                     {% if not loop.first %}
@@ -147,7 +147,7 @@ Find available sites
 
   <div class="column-two-thirds">
       <dl class="accordion">
-      {% for region,sub_regions in regions.items() %}
+      {% for region,sub_regions in regions.items %}
           <dt>
             {% if sub_regions %}
               <a href="">{{ region }}</a>
@@ -164,10 +164,10 @@ Find available sites
                         <th>Local Authority</th>
                         <th>Number of available sites</th>
                     </thead>
-                    {% for k, v in sub_regions.items()%}
+                    {% for k, v in sub_regions.items %}
                       {% if v > 0  %}
                         <tr>
-                            <td><a href="{{url_for('authority', authority=k)}}">{{k}}</a></td>
+                            <td><a href="{% url 'authority' k %}">{{k}}</a></td>
                             <td>{{v}}</td>
                         </tr>
                       {% endif %}
