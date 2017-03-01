@@ -1,0 +1,147 @@
+<html lang="en-GB" class="no-js not-ie8">
+<!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}Find available land{% endblock title %}</title>
+  <meta name="description" content="We’ve introduced a new way to find land availability">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="format-detection" content="date=no">
+  <meta name="format-detection" content="address=no">
+  <meta name="DCSext.Authenticated" content="No" />
+  <meta name="ROBOTS" content="NOFOLLOW,NOINDEX">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    <script type="text/javascript">
+      (function(){if(navigator.userAgent.match(/IEMobile\/10\.0/)){var d=document,c="appendChild",a=d.createElement("style");a[c](d.createTextNode("@-ms-viewport{width:auto!important}"));d.getElementsByTagName("head")[0][c](a);}})();
+    </script>
+
+    <!--[if gt IE 8]><!--><link href="{{ url_for('static', filename='stylesheets/govuk-template.css')}}" media="screen" rel="stylesheet" type="text/css" /><!--<![endif]-->
+    <!--[if IE 6]><link href="{{ url_for('static', filename='stylesheets/govuk-template-ie6.css')}}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if IE 7]><link href="{{ url_for('static', filename='stylesheets/govuk-template-ie7.css')}}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if IE 8]><link href="{{ url_for('static', filename='stylesheets/govuk-template-ie8.css')}}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+
+
+    <!--[if IE 8]>
+    <script type="text/javascript">
+      (function(){if(window.opera){return;}
+       setTimeout(function(){var a=document,g,b={families:(g=
+       ["nta"]),urls:["{{ url_for('static', filename='stylesheets/fonts-ie8.css')}}"]},
+       c="/public/javascripts/vendor/goog/webfont-debug.js?0.16.1",d="script",
+       e=a.createElement(d),f=a.getElementsByTagName(d)[0],h=g.length;WebFontConfig
+       ={custom:b},e.src=c,f.parentNode.insertBefore(e,f);for(;h=h-1;a.documentElement
+       .className+=' wf-'+g[h].replace(/\s/g,'').toLowerCase()+'-n4-loading');},0)
+      })()
+    </script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+      <link href="{{ url_for('static', filename='stylesheets/fonts.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <!--<![endif]-->
+
+
+    <!--[if lt IE 9]>
+      <script src="{{ url_for('static', filename='/javascripts/ie.js')}}" type="text/javascript"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='/images/favicon.ico')}}" type="image/x-icon" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="{{ url_for('static', filename='stylesheets/olaf.css')}}"  rel="stylesheet" type="text/css">
+  <!--[if gt IE 8]><!--><link href="{{ url_for('static', filename='stylesheets/main.css')}}"  rel="stylesheet" type="text/css"><!--<![endif]-->
+  <!--[if IE 6]><link href="{{ url_for('static', filename='stylesheets/main-ie6.css')}}" rel="stylesheet" type="text/css" /><![endif]-->
+  <!--[if IE 7]><link href="{{ url_for('static', filename='stylesheets/main-ie7.css')}}" rel="stylesheet" type="text/css" /><![endif]-->
+  <!--[if IE 8]><link href="{{ url_for('static', filename='stylesheets/main-ie8.css')}}" rel="stylesheet" type="text/css" /><![endif]-->
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/font-awesome/css/font-awesome.min.css') }}">
+
+<script src="{{ url_for('static', filename='javascripts/govuk-template.js')}}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='javascripts/vendor/jquery-1.11.0.min.js')}}"></script>
+<script src="{{ url_for('static', filename='javascripts/vendor/polyfills/bind.js')}}"></script>
+<script src="{{ url_for('static', filename='javascripts/govuk/selection-buttons.js')}}"></script>
+<script src="{{ url_for('static', filename='javascripts/vendor/details.polyfill.js')}}"></script>
+<script src="{{ url_for('static', filename='javascripts/application.js')}}"></script>
+<script src="{{ url_for('static', filename='javascripts/olaf.js')}}"></script>
+
+<script src="{{ url_for('static', filename='vendor/ol/ol.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/ol/ol.css') }}">
+<style>
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  bottom: 12px;
+  left: -50px;
+}
+
+.ol-popup:after, .ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.ol-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+.ol-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+}
+.ol-popup-closer:after {
+  content: "✖";
+}
+#popup-content td {
+  padding: 2px;
+}
+</style>
+
+  {% block optional_head %}{% endblock %}
+</head>
+<body>
+  {% include "header.html" %}
+
+
+<main id="content" role="main">
+
+ <div class="phase-banner-discovery">
+    <p>
+      <strong class="phase-tag">Discovery</strong>
+      <span>This is a new service – your <a href="mailto:gds-data-science@digital.cabinet-office.gov.uk">feedback</a> will help us to improve it.</span>
+
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('logout') }}" style="margin-right: 8px" class='pull-right'>Sign out</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" style="margin-right: 8px" class='pull-right'>Sign in</a>
+        {% endif %}
+    </p>
+
+
+  </div>
+
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block optional_footer %}
+    {% include "footer.html" %}
+  {% endblock %}
+
+</body>
+</html>

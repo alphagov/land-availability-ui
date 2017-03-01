@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+
+{% block pageheading %}
+Find available sites
+{% endblock %}
+
+{% block optional_head %}
+      <link href="{{ url_for('static', filename='vendor/chosen/chosen.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+      <script src="{{ url_for('static', filename='vendor/chosen/chosen.jquery.min.js')}}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+    <h1 class="heading-large">Debug</h1>
+
+    <h2 class="heading-medium">UPRNS</h2>
+    {% for uprn in uprns %}
+        {{ uprn }}<br/>
+    {% endfor %}
+
+
+    <h2 class="heading-medium">Billing References</h2>
+    {% if billing %}
+    <table>
+        <thead>
+            <tr>
+                <th>UPRN</th>
+                <th>Billing reference</th>
+                <th>Version</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for k, v in billing.items() %}
+                <td>{{k}}</td>
+                <td>{{v.0}}</td>
+                <td>{{v.1}}</td>
+            {% endfor%}
+        </tbody>
+    </table>
+    {% endif %}
+
+{% endblock %}

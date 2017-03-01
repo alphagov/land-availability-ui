@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block pageheading %}
+{% endblock %}
+
+{% block content %}
+
+<div>
+  <a href="/?edit" class="link-back">Change my search</a>
+  <a style="float:right;" class="link-forward" href="/s/{{share_key}}" target="blank">Share this search</a>
+</div>
+
+<h1 class="bold-xlarge">
+  {{count}} suitable sites found
+</h1>
+
+<p class="lede">{{ search_description|linebreaksbr }}</p>
+
+<div id="tabs-container">
+    <ul class="tabs-menu">
+        <li class="active-tab">
+            <i class="fa fa-list">
+              <span class="visuallyhidden">List view</span>
+            </i>
+
+          <a href="#listview">
+            List view
+          </a>
+        </li>
+        <li>
+              <i class="fa fa-map-marker">
+                  <span class="visuallyhidden">List view</span>
+               </i>
+
+            <a href="#mapview">
+              Map view</a>
+        </li>
+    </ul>
+
+    <div class="clearfix"></div>
+
+    <div class="tab grid-row">
+        <div id="listview" class="tab-content" style="display:block;">
+            <div class="grid-row">
+              <div class="column-one-third">
+                  {% include "snippets/advanced_search.html" %}
+              </div>
+
+              <div class="column-two-thirds">
+
+                {% if results %}
+                <ul class="list">
+                  {% for result in results.items %}
+                  <li>
+                      {% with detail=result, loop_index=loop.index0 %}
+                      {% include "snippets/search_result.html"  %}
+                      {% endwith %}
+                  </li>
+                  {% else %}
+                    <p>No results were found, either expand the search area or <a href="/?edit">change your search</a></p>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+      </div>
+
+        <div id="mapview" class="tab-content">
+            <div class="grid-row">
+              <div class="column-one-third">
+                  {% include "snippets/advanced_search.html" %}
+              </div>
+
+              <div class="column-two-thirds">
+                <div id="map" class="map" style="width: 500px; height: 500px;">
+                  <div id="popup" class="ol-popup">
+                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                    <div id="popup-content"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+  </div> <!-- tab -->
+
+  {% if results.total %}
+    <div class="clearfix grid-row">
+      <div class="column-one-quarter">  &nbsp;</div>
+      <div class="column-three-quarter">
+            {% if results.total %}
+          </div>
+              <ul class="pagination">
+                    {% if results.page > 1 %}
+                   <li><a href="{{ this_url(page=results.page-1) }}">&lsaquo;</a></li>
+                   {% endif %}
+                    {%- for page in results.iter_pages(3,2,2,3) %}
+                      {% if page %}
+                        {% if page != results.page %}
+                        <li>
+                          <a  href="{{ this_url(page=page) }}">{{ page }}</a>
+                        </li>
+                        {% else %}
+                          <li><a class='active' href="{{ this_url(page=page) }}">{{ page }}</a></strong>
+                        {% endif %}
+                      {% else %}
+                        <li class=ellipsis><a>…</a></li>
+                      {% endif %}
+                    {%- endfor %}
+                  {% if results.page < results.pages %}
+                 <li><a href="{{ this_url(page=results.page+1) }}">&rsaquo;</a></li>
+                 {% endif %}
+              </ul>
+            {% else %}
+            <div>
+            <br/>
+            No results were found for these criteria.
+            Please <a href="/">refine your search</a>
+            </div>
+            {% endif %}
+                  </div>
+            </div>
+      </div>
+    </div>
+    {% endif %}
+</div>
+<script>
+    var map_loaded = false;
+
+    (function($) {
+        $(".tabs-menu a").click(function(event) {
+            event.preventDefault();
+            $(this).parent().addClass("active-tab");
+            $(this).parent().siblings().removeClass("active-tab");
+            var tab = $(this).attr("href");
+            $(".tab-content").not(tab).css("display", "none");
+            $(tab).show();
+            // We don't want to keep focus because 'yellow box'.
+            $(this).blur();
+
+            if (event.target.hash == "#mapview" && !map_loaded) {
+              setup_map();
+            }
+        });
+
+        $('.mini-map').hide();
+        $('.show-mini-map').click(function(e) {
+            e.preventDefault();
+
+            var mini_map_id = $(this).attr('for');
+
+            $(mini_map_id).toggle();
+
+            mini_maps[mini_map_id]();
+            mini_maps[mini_map_id] = function(){};
+            $(this).blur();
+        });
+    })(jQuery);
+
+    var style = new ol.style.Style({
+      image: new ol.style.Icon(({
+        anchor: [0.5, 1.0],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        opacity: 1.0,
+        src: '/static/images/icons/icon-locator.png'
+      }))
+    });
+
+
+    function setup_map(){
+      var features = [];
+
+      {% if results %}
+        {% for result in results.items %}
+          features.push(
+            new ol.Feature({
+              content: '<a href="/location/{{result.id}}">{{result.name}}</a>',
+              geometry: new ol.geom.Point(ol.proj.fromLonLat([{{result.centre.lon}}, {{result.centre.lat}}]))
+            })
+          );
+        {% endfor %}
+      {% endif %}
+
+      var vectorSource = new ol.source.Vector({
+        features: features
+      });
+
+      var vectorLayer = new ol.layer.Vector({
+        source: vectorSource
+      });
+      vectorLayer.setStyle(style);
+
+      var popup = $('#popup')[0];
+      var popup_content = $('#popup-content');
+      $('#popup-closer').click(function () {
+        overlay.setPosition(undefined);
+        return false;
+      });
+
+      var overlay = new ol.Overlay({
+        element: popup,
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250
+        }
+      });
+
+      var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          }),
+          vectorLayer
+        ],
+        overlays: [overlay],
+        view: new ol.View({
+        })
+      });
+
+      map.on('singleclick', function(evt) {
+        var feature = map.forEachFeatureAtPixel(evt.pixel,
+          function(feature, layer) {
+            return feature;
+          });
+
+        if(feature) {
+          content = feature.get('content');
+
+          popup_content.html('<p>' + content + '</p>');
+
+          var coordinate = feature.getGeometry().getCoordinates();
+          overlay.setPosition(coordinate);
+        }
+      });
+
+      var extent = vectorSource.getExtent();
+      map.getView().fit(extent, map.getSize(), {padding: [15, 15, 15, 15]});
+
+      map_loaded = true;
+    }
+
+    var mini_maps = {};
+
+    {% for result in results.items %}
+    var mini_map_id = '#mini-map-' + {{loop.index0}};
+
+    mini_maps[mini_map_id] = function() {
+      var mini_map_source = new ol.source.Vector({
+        features: [
+          new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([{{result.centre.lon}}, {{result.centre.lat}}]))
+          })
+        ]
+      })
+
+      var mini_map_layer = new ol.layer.Vector({
+        source: mini_map_source
+      });
+      mini_map_layer.setStyle(style);
+
+      var map = new ol.Map({
+        target: 'mini-map-' + {{loop.index0}},
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          }),
+          mini_map_layer
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([{{result.centre.lon}}, {{result.centre.lat}}]),
+            zoom: 15
+        })
+      });
+    }
+
+    {% endfor %}
+</script>
+
+{% endblock %}

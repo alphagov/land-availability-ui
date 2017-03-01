@@ -1,0 +1,23 @@
+
+  <form action="/search" method="GET">
+
+        <div class="form-group">
+            <label class="form-label bold-xsmall" for="distance">Expand search area</label>
+            <select name="center_distance" class='form-control' style="width:90%" >
+               <option value="1" {%if terms.center_distance == "1"%}selected{%endif%}>Within 1 mile</option>
+               <option value="3" {%if terms.center_distance == "3"%}selected{%endif%}>Within 3 miles</option>
+               <option value="5" {%if terms.center_distance == "5"%}selected{% endif%}>Within 5 miles</option>
+            </select>
+        </div>
+
+
+        <input type="hidden" name="location" value="{{terms.location}}"/>
+        <input type="hidden" name="build" value="{{terms.build}}"/>
+        <input type="hidden" name="pupils" value="{{terms.pupils}}"/>
+        <input type="hidden" name="attributes" value="{{terms.attributes}}"/>
+
+          <div class="form-group">
+            <input class="button" type="submit" value="Update results">
+          </div>
+
+  </form>

@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% block pageheading %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Make sure this link takes the user back to an anchor so they're at same scroll pos -->
+<div>
+{% if referrer %}
+  <a href="{{referrer}}" class="link-back">Back to list</a>
+{% else %}
+  <a href="/" class="link-back">Go to search</a>
+{% endif %}
+</div>
+
+<h1 class="heading-xlarge">
+  {{ location.name }}
+</h1>
+
+
+<div class="grid-row">
+  <div class="column-one-third">
+    <h4 class="bold-medium">Location</h4>
+  </div>
+  <div class="column-two-thirds">
+    <div id="map" style="height: 300px;"></div>
+  </div>
+</div>
+
+<div class="grid-row">
+  &nbsp;
+</div>
+
+<div class="grid-row">
+  <div class="column-one-third">
+    <div>
+      <h4 class="bold-medium">Site details</h4>
+    </div>
+  </div>
+  <div class="column-two-thirds">
+
+      <div>
+        <h4 class="bold-small">Full address</h4>
+        <p>{{ location.name }}{% if location.address %}, {{ location.address }}{% endif %}{% if location.postcode %}, {{ location.postcode }}{% endif %}</p>
+      </div>
+
+      <div>
+        <h4 class="bold-small">Local Authority</h4>
+        <p>{{ location.authority }}</p>
+      </div>
+
+      <div>
+        <h4 class="bold-small">Owner</h4>
+        <p> {{ location.owner or "Unknown" }} </p>
+      </div>
+
+      {% if location.geoattributes.get('AREA') %}
+      <div>
+        <h4 class="bold-small">Site size</h4>
+        <p>{{ location.geoattributes.get('AREA')|int }} m&sup2;
+        </p>
+      </div>
+      {% endif %}
+
+      <div>
+        <h4 class="bold-small">Estimated floor space (2 floors)</h4>
+        <p>{{ location.geoattributes.get('FLOORSPACE')|int }} m&sup2;
+        </p>
+      </div>
+
+      {% if location.geoattributes.get('BROADBAND') %}
+        <div>
+            <h4 class="bold-small">Superfast Broadband availability</h4>
+            <p>{{location.geoattributes.get('BROADBAND')}}%</p>
+        </div>
+      {% endif %}
+
+      {% if location.geoattributes.get('COVERAGE BY GREENBELT') %}
+      <div>
+        <h4 class="bold-small">Percentage greenbelt</h4>
+        <p>{{ location.geoattributes.get('COVERAGE BY GREENBELT')|decimal_to_percentage }} &#37;</p>
+      </div>
+      {% endif %}
+
+      {% if current_user.is_authenticated %}
+
+        {% if location.titles %}
+        <div>
+        <h4 class="bold-small">Land registry titles</h4>
+          <p>
+            {% for t in location.titles %}
+              <div class="column-one-third">
+                  {{ t }}
+              </div>
+            {% endfor %}
+          </p>
+        </div>
+          <div>&nbsp;</div>
+      {% endif %}
+        {% if location.uprn %}
+        <div>
+          <h4 class="bold-small">UPRN</h4>
+          <p>
+          {% for uprn in location.uprn  %}
+            <div class="column-one-third">
+              <a target="_blank" rel="external" href=" http://address.alpha.openregister.org/record/{{uprn}}">{{ uprn}}</a>
+            </div>
+          {% endfor %}
+          </p>
+        </div>
+        {% endif %}
+      {% endif %}
+  </div>
+</div>
+
+<div class="grid-row">
+  &nbsp;
+</div>
+
+<div class="grid-row">
+  <div class="column-one-third">
+      <h4 class="bold-medium">Distance to different amenities</h4>
+  </div>
+  <div class="column-two-thirds">
+      <div>
+        <h4 class="bold-small">Nearest primary school</h4>
+        <p>{{ location.geoattributes.get('DISTANCE TO PRIMARY SCHOOL')|meters_to_miles }} miles</p>
+      </div>
+
+      <div>
+        <h4 class="bold-small">Nearest secondary school</h4>
+        <p>{{ location.geoattributes.get('DISTANCE TO SECONDARY SCHOOL')|meters_to_miles }} miles</p>
+      </div>
+
+      <div>
+        <h4 class="bold-small">Nearest metro station</h4>
+        <p>{{ location.geoattributes.get('DISTANCE TO METRO STATION')|meters_to_miles }} miles</p>
+      </div>
+
+      <div>
+        <h4 class="bold-small">Nearest railway station</h4>
+        <p>{{ location.geoattributes.get('DISTANCE TO RAIL STATION')|meters_to_miles }} miles</p>
+      </div>
+
+      <div>
+        <h4 class="bold-small">Nearest motorway junction</h4>
+        <p>{{ location.geoattributes.get('DISTANCE TO MOTORWAY JUNCTION')|meters_to_miles }} miles</p>
+      </div>
+
+      <div>
+        <h4 class="bold-small">Nearest bus stop</h4>
+        <p>{{ location.geoattributes.get('DISTANCE TO BUS STOP')|meters_to_miles }} miles</p>
+      </div>
+
+      <div>
+        <h4 class="bold-small">Nearest overhead line</h4>
+        <p>{{ location.geoattributes.get('DISTANCE TO OVERHEAD LINE')|meters_to_miles }} miles</p>
+      </div>
+
+      <div>
+        <h4 class="bold-small">Nearest substation</h4>
+        <p>{{ location.geoattributes.get('DISTANCE TO SUBSTATION')|meters_to_miles }} miles</p>
+      </div>
+</div>
+
+<script>
+    var format = new ol.format.WKT();
+    var feature = format.readFeature('{{location.geom}}');
+    feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+
+    var map_source = new ol.source.Vector({
+      features: [feature]
+    })
+
+    var map_layer = new ol.layer.Vector({
+      source: map_source
+    });
+
+    var style = new ol.style.Style({
+      fill: new ol.style.Fill({
+        color: 'rgba(0,53,255,0.1)'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#0099FF',
+        width: 3
+      })
+    });
+    map_layer.setStyle(function(feature, resolution) {
+        return style;
+    })
+
+
+    var map = new ol.Map({
+      target: 'map',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        }),
+        map_layer
+      ],
+      view: new ol.View({
+          center: ol.proj.fromLonLat([{{location.centre.lon}}, {{location.centre.lat}}]),
+          zoom: 15
+      })
+    });
+
+    var extent = map_source.getExtent();
+    map.getView().fit(extent, map.getSize(), {padding: [50, 50, 50, 50]});
+</script>
+
+{% endblock %}
