@@ -138,3 +138,4 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 HTTP_USERNAME = os.environ.get('HTTP_USERNAME')
 HTTP_PASSWORD = os.environ.get('HTTP_PASSWORD')
+LOGIN_REDIRECT_URL = '/'
