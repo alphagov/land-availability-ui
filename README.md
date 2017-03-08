@@ -1,6 +1,10 @@
 # land-availability-ui
 Land Availability Tool - Frontend
 
+# Continuous integration status
+
+[![Travis-CI Status](https://secure.travis-ci.org/alphagov/land-availability-ui.png?branch=master)](http://travis-ci.org/#!/alphagov/land-availability-ui)
+
 # PostgreSQL Setup
 
 Make sure you have **PostgreSQL** (tested with 9.6) installed.
