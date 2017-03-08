@@ -13,12 +13,13 @@
      <p>Sign in to get started</p>
 
       <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
 
         <input type="hidden" name="next" value="{{next}}">
 
         <div class="form-group">
-              <label class="form-label" for="email"><span class=" bold-small">Email Address</span></label>
-              <input type="text" class="form-control" name="email">
+              <label class="form-label" for="email"><span class=" bold-small">Username</span></label>
+              <input type="text" class="form-control" name="username">
         </div>
 
 
