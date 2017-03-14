@@ -11,6 +11,8 @@ env:
   global:
   - DATABASE_URL=postgres://postgres@localhost:5432/landavailability_test
   - SECRET_KEY=abcd1234
+  - LAND_AVAILABILITY_API_URL=''
+  - LAND_AVAILABILITY_API_TOKEN=''
 script: pytest -v
 deploy:
   provider: heroku

@@ -9,4 +9,5 @@ urlpatterns = [
         r'^login/$',
         auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^search/$', views.SearchView.as_view(), name='search'),
 ]

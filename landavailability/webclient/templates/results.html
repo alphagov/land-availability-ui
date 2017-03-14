@@ -50,13 +50,11 @@
 
                 {% if results %}
                 <ul class="list">
-                  {% for result in results.items %}
+                  {% for result in results %}
                   <li>
-                      {% with detail=result, loop_index=loop.index0 %}
-                      {% include "snippets/search_result.html"  %}
-                      {% endwith %}
+                      {% include "snippets/search_result.html" with detail=result loop_index=forloop.counter only %}
                   </li>
-                  {% else %}
+                  {% empty %}
                     <p>No results were found, either expand the search area or <a href="/?edit">change your search</a></p>
                   {% endfor %}
                 </ul>
@@ -82,13 +80,13 @@
             </div>
         </div>
   </div> <!-- tab -->
-
   {% if results.total %}
     <div class="clearfix grid-row">
       <div class="column-one-quarter">  &nbsp;</div>
       <div class="column-three-quarter">
             {% if results.total %}
           </div>
+              {% comment %}
               <ul class="pagination">
                     {% if results.page > 1 %}
                    <li><a href="{{ this_url(page=results.page-1) }}">&lsaquo;</a></li>
@@ -110,6 +108,7 @@
                  <li><a href="{{ this_url(page=results.page+1) }}">&rsaquo;</a></li>
                  {% endif %}
               </ul>
+              {% endcomment %}
             {% else %}
             <div>
             <br/>
@@ -171,11 +170,11 @@
       var features = [];
 
       {% if results %}
-        {% for result in results.items %}
+        {% for result in results %}
           features.push(
             new ol.Feature({
               content: '<a href="/location/{{result.id}}">{{result.name}}</a>',
-              geometry: new ol.geom.Point(ol.proj.fromLonLat([{{result.centre.lon}}, {{result.centre.lat}}]))
+              geometry: new ol.geom.Point(ol.proj.fromLonLat([{{result.point.coordinates.0}}, {{result.point.coordinates.1}}]))
             })
           );
         {% endfor %}
@@ -242,14 +241,14 @@
 
     var mini_maps = {};
 
-    {% for result in results.items %}
-    var mini_map_id = '#mini-map-' + {{loop.index0}};
+    {% for result in results %}
+    var mini_map_id = '#mini-map-' + {{forloop.counter}};
 
     mini_maps[mini_map_id] = function() {
       var mini_map_source = new ol.source.Vector({
         features: [
           new ol.Feature({
-            geometry: new ol.geom.Point(ol.proj.fromLonLat([{{result.centre.lon}}, {{result.centre.lat}}]))
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([{{result.point.coordinates.0}}, {{result.point.coordinates.1}}]))
           })
         ]
       })
@@ -260,7 +259,7 @@
       mini_map_layer.setStyle(style);
 
       var map = new ol.Map({
-        target: 'mini-map-' + {{loop.index0}},
+        target: 'mini-map-' + {{forloop.counter}},
         layers: [
           new ol.layer.Tile({
             source: new ol.source.OSM()
@@ -268,7 +267,7 @@
           mini_map_layer
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([{{result.centre.lon}}, {{result.centre.lat}}]),
+            center: ol.proj.fromLonLat([{{result.point.coordinates.0}}, {{result.point.coordinates.1}}]),
             zoom: 15
         })
       });
