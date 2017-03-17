@@ -14,6 +14,16 @@ class SearchView(TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
 
+        postcode = request.GET.get('location')
+        center_distance = request.GET.get('center_distance')
+
+        if center_distance:
+            # Miles to Meters conversion
+            range_distance = float(center_distance) * 1609.34
+        else:
+            # Set a default value
+            range_distance = 1000
+
         try:
             headers = {
                 'Authorization': 'Token {0}'.format(
@@ -23,8 +33,8 @@ class SearchView(TemplateView):
             response = requests.get(
                 url,
                 params={
-                    'postcode': request.GET.get('location'),
-                    'range_distance': 1000},
+                    'postcode': postcode,
+                    'range_distance': range_distance},
                 headers=headers)
             context['results'] = response.json()
             context['terms'] = request.GET
