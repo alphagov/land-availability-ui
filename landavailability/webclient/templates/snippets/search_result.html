@@ -1,20 +1,20 @@
 
 <div class="grid-row">
     <!-- URL is /location/ID -->
-    <h4 class="heading-small"><a href="/location/{{detail.id}}">{{detail.name}} {% if detail.address %}, {{detail.address}} {% endif %} {% if detail.postcode %},{% endif %} {{detail.postcode or ""}} </a></h4>
+    <h4 class="heading-small"><a href="/location/{{detail.id}}">{{detail.name}} {% if detail.address %}, {{detail.address}} {% endif %} {% if detail.postcode %},{% endif %} {{detail.postcode }} </a></h4>
 
     <div>
-        <div><span class="bold-small">Owner:</span> {{detail.owner or "Unknown" }}</div>
+        <div><span class="bold-small">Owner:</span> {{detail.owner}}</div>
     </div>
     {% if detail.geoattributes.AREA %}
     <div>
         <div><span class="bold-small">Site size:</span>
-            {{detail.geoattributes.AREA|int}} m&sup2;</div>
+            {{detail.geoattributes.AREA}} m&sup2;</div>
     </div>
     {% endif %}
     <div>
         <div><span class="bold-small">Estimated floor space:</span>
-        {{ detail.geoattributes.FLOORSPACE|int}}  m&sup2;</div>
+        {{ detail.geoattributes.FLOORSPACE}}  m&sup2;</div>
     </div>
 
 {% if not detail.area_suitable %}
@@ -25,16 +25,16 @@
   </i>
   <div class="explanation">
     <h4 class="bold-small">
-      {% if detail.geoattributes.FLOORSPACE|int <  detail.lower_site_req|int %}
+      {% if detail.geoattributes.FLOORSPACE <  detail.lower_site_req %}
         This location is too small
       {% endif %}
-      {% if detail.geoattributes.FLOORSPACE|int >  detail.upper_site_req|int %}
+      {% if detail.geoattributes.FLOORSPACE >  detail.upper_site_req %}
         This location is too large
       {% endif %}
     </h4>
     <p>It is estimated that for your requirements the floorspace available
-       should be between {{ detail.lower_site_req|int }}m&sup2;and
-       {{ detail.upper_site_req|int }}m&sup2;</p>
+       should be between {{ detail.lower_site_req }}m&sup2;and
+       {{ detail.upper_site_req }}m&sup2;</p>
   </div>
 </div>
 <br/>

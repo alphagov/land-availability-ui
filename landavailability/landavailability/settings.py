@@ -139,3 +139,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 HTTP_USERNAME = os.environ.get('HTTP_USERNAME')
 HTTP_PASSWORD = os.environ.get('HTTP_PASSWORD')
 LOGIN_REDIRECT_URL = '/'
+
+# Land Availability APIs
+LAND_AVAILABILITY_API_URL = get_env_variable('LAND_AVAILABILITY_API_URL')
+LAND_AVAILABILITY_API_TOKEN = get_env_variable('LAND_AVAILABILITY_API_TOKEN')
