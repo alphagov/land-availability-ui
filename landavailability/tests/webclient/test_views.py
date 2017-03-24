@@ -165,7 +165,7 @@ class WebclientViewTestCase(TestCase):
             'nearest_broadband_fast': None
         }]
 
-        api_url = '{0}/api/location/'.format(
+        api_url = '{0}/api/locations/'.format(
             settings.LAND_AVAILABILITY_API_URL)
 
         responses.add(

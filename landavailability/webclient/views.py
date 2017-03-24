@@ -28,7 +28,7 @@ class SearchView(TemplateView):
             headers = {
                 'Authorization': 'Token {0}'.format(
                     settings.LAND_AVAILABILITY_API_TOKEN)}
-            url = '{0}/api/location/'.format(
+            url = '{0}/api/locations/'.format(
                 settings.LAND_AVAILABILITY_API_URL)
             response = requests.get(
                 url,
