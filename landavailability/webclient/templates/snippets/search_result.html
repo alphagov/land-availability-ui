@@ -1,7 +1,7 @@
 
 <div class="grid-row">
     <!-- URL is /location/ID -->
-    <h4 class="heading-small"><a href="/location/{{detail.id}}">{{detail.name}} {% if detail.address %}, {{detail.address}} {% endif %} {% if detail.postcode %},{% endif %} {{detail.postcode }} </a></h4>
+    <h4 class="heading-small"><a href="/locations/{{detail.uprn}}">{{detail.name}} {% if detail.address %}, {{detail.address}} {% endif %} {% if detail.postcode %},{% endif %} {{detail.postcode }} </a></h4>
 
     <div>
         <div><span class="bold-small">Owner:</span> {{detail.owner}}</div>
