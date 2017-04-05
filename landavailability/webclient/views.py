@@ -42,3 +42,25 @@ class SearchView(TemplateView):
             # Log error here
             pass
         return self.render_to_response(context)
+
+
+class LocationDetailsView(TemplateView):
+    template_name = "location.html"
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        uprn = kwargs.get('uprn')
+
+        try:
+            headers = {
+                'Authorization': 'Token {0}'.format(
+                    settings.LAND_AVAILABILITY_API_TOKEN)}
+            url = '{0}/api/locations/{1}/'.format(
+                settings.LAND_AVAILABILITY_API_URL,
+                uprn)
+            response = requests.get(url, headers=headers)
+            context['location'] = response.json()
+        except Exception as ex:
+            # Log error here
+            pass
+        return self.render_to_response(context)

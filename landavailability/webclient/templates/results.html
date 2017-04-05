@@ -173,7 +173,7 @@
         {% for result in results %}
           features.push(
             new ol.Feature({
-              content: '<a href="/location/{{result.id}}">{{result.name}}</a>',
+              content: '<a href="/locations/{{result.uprn}}">{{result.name}}</a>',
               geometry: new ol.geom.Point(ol.proj.fromLonLat([{{result.point.coordinates.0}}, {{result.point.coordinates.1}}]))
             })
           );

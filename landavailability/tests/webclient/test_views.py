@@ -179,3 +179,74 @@ class WebclientViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['results']), 2)
+
+    @pytest.mark.django_db
+    @override_settings(STATICFILES_STORAGE=None)
+    @responses.activate
+    def test_location_details_view(self):
+        client = Client()
+        url = reverse('location-details', kwargs={'uprn': '010090969113'})
+
+        json_body = {
+            'nearest_trainstop': None,
+            'nearest_school': None,
+            'nearest_motorway': None,
+            'nearest_substation_distance': None,
+            'geom': {
+                'type': 'MultiPolygon',
+                'coordinates': [
+                    [
+                        [
+                            [0.13153553009033203, 52.205765731674575],
+                            [0.13143360614776609, 52.20569340742784],
+                            [0.13174474239349365, 52.20561122064091],
+                            [0.13180643320083618, 52.20569669489615],
+                            [0.13153553009033203, 52.205765731674575]
+                        ]
+                    ]
+                ]
+            },
+            'nearest_broadband_distance': 72.26585179,
+            'estimated_floor_space': None,
+            'uprn': '010090969113',
+            'nearest_motorway_distance': None,
+            'nearest_school_distance': None,
+            'authority': 'Cambridge City Council',
+            'nearest_ohl': None,
+            'point': {
+                'type': 'Point',
+                'coordinates': [0.1316297368794871, 52.20569063525474]
+            },
+            'nearest_metrotube': None,
+            'nearest_busstop_distance': None,
+            'nearest_greenbelt_distance': None,
+            'id': 33,
+            'owner': '',
+            'nearest_greenbelt': None,
+            'nearest_ohl_distance': None,
+            'nearest_substation': None,
+            'nearest_broadband_fast': True,
+            'nearest_trainstop_distance': None,
+            'full_address': None,
+            'name': 'Test Location 1',
+            'nearest_busstop': None,
+            'unique_asset_id': '',
+            'nearest_metrotube_distance': None,
+            'nearest_broadband': 6,
+            'ba_ref': '00004870000113'
+        }
+
+        api_url = '{0}/api/locations/{1}/'.format(
+            settings.LAND_AVAILABILITY_API_URL,
+            '010090969113')
+
+        responses.add(
+            responses.GET, api_url,
+            body=json.dumps(json_body), status=200,
+            content_type='application/json')
+
+        response = client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('Test Location 1' in str(response.content))
+        self.assertTrue('Superfast Broadband' in str(response.content))
