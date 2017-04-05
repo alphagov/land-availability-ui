@@ -16,6 +16,7 @@ class SearchView(TemplateView):
 
         postcode = request.GET.get('location')
         center_distance = request.GET.get('center_distance')
+        polygon = request.GET.get('polygon')
 
         if center_distance:
             # Miles to Meters conversion
@@ -30,14 +31,23 @@ class SearchView(TemplateView):
                     settings.LAND_AVAILABILITY_API_TOKEN)}
             url = '{0}/api/locations/'.format(
                 settings.LAND_AVAILABILITY_API_URL)
-            response = requests.get(
-                url,
-                params={
-                    'postcode': postcode,
-                    'range_distance': range_distance},
-                headers=headers)
-            context['results'] = response.json()
-            context['terms'] = request.GET
+
+            if polygon:
+                response = requests.get(
+                    url,
+                    params={'polygon': polygon},
+                    headers=headers)
+            else:
+                response = requests.get(
+                    url,
+                    params={
+                        'postcode': postcode,
+                        'range_distance': range_distance},
+                    headers=headers)
+
+            if response.status_code == requests.codes.ok:
+                context['results'] = response.json()
+                context['terms'] = request.GET
         except Exception as ex:
             # Log error here
             pass
