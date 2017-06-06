@@ -10,9 +10,19 @@
   <a style="float:right;" class="link-forward" href="/s/{{share_key}}" target="blank">Share this search</a>
 </div>
 
+{% if count != None %}
 <h1 class="bold-xlarge">
   {{count}} suitable sites found
 </h1>
+{% endif %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 <p class="lede">{{ search_description|linebreaksbr }}</p>
 

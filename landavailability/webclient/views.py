@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.conf import settings
+from django.contrib import messages
+
 import requests
+
+log = __import__('logging').getLogger(__name__)
 
 
 class HomePageView(TemplateView):
@@ -25,13 +29,15 @@ class SearchView(TemplateView):
             # Set a default value
             range_distance = 1000
 
-        try:
-            headers = {
-                'Authorization': 'Token {0}'.format(
-                    settings.LAND_AVAILABILITY_API_TOKEN)}
-            url = '{0}/api/locations/'.format(
-                settings.LAND_AVAILABILITY_API_URL)
+        headers = {
+            'Authorization': 'Token {0}'.format(
+                settings.LAND_AVAILABILITY_API_TOKEN)}
+        url = '{0}/api/locations/'.format(
+            settings.LAND_AVAILABILITY_API_URL)
+        generic_error_msg = 'There was a problem. The admins have been ' \
+            'notified. Please try again later.'
 
+        try:
             if polygon:
                 response = requests.get(
                     url,
@@ -45,12 +51,27 @@ class SearchView(TemplateView):
                         'range_distance': range_distance},
                     headers=headers)
 
-            if response.status_code == requests.codes.ok:
-                context['results'] = response.json()
-                context['terms'] = request.GET
         except Exception as ex:
-            # Log error here
-            pass
+            log.error('Problem connecting to url %s: %s',
+                      url, ex)
+            messages.add_message(request, messages.ERROR,
+                                 generic_error_msg)
+
+        if response.status_code == requests.codes.ok:
+            try:
+                context['results'] = response.json()
+            except ValueError:
+                log.error('Non-json response from %s: %s',
+                          response.url, response.text)
+                messages.add_message(request, messages.ERROR,
+                                     generic_error_msg)
+            context['terms'] = request.GET
+        else:
+            log.error('Bad status querying url %s: %s',
+                      response.url, response.text)
+            messages.add_message(request, messages.ERROR, generic_error_msg)
+
+        # TODO Get 'count' out of the API
         return self.render_to_response(context)
 
 

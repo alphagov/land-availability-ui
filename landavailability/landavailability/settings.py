@@ -142,4 +142,6 @@ LOGIN_REDIRECT_URL = '/'
 
 # Land Availability APIs
 LAND_AVAILABILITY_API_URL = get_env_variable('LAND_AVAILABILITY_API_URL')
+assert not LAND_AVAILABILITY_API_URL.endswith('/'), \
+    'LAND_AVAILABILITY_API_URL should not have a trailing slash'
 LAND_AVAILABILITY_API_TOKEN = get_env_variable('LAND_AVAILABILITY_API_TOKEN')

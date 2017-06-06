@@ -26,13 +26,14 @@ Make sure you have these environment variables set:
 ```
 DATABASE_URL=postgres://USERNAME:PASSWORD@HOST:PORT/DBNAME
 SECRET_KEY='abcd1234'
+LAND_AVAILABILITY_API_URL=http://localhost:8001
+LAND_AVAILABILITY_API_TOKEN=abcd1234
 ```
 
-example:
+Example value:
 
 ```
 DATABASE_URL=postgres://andreagrandi@localhost:5432/landavailability-ui
-SECRET_KEY='abcd1234'
 ```
 
 If you are using a Python virtual environment, you can save these values in
@@ -40,7 +41,7 @@ $venv_folder/bin/postactivate script:
 
 ```
 export DATABASE_URL=postgres://andreagrandi@localhost:5432/landavailability-ui
-export SECRET_KEY='abcd1234'
+...
 ```
 
 # Python
