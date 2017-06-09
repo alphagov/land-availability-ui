@@ -26,7 +26,7 @@ Make sure you have these environment variables set:
 ```
 DATABASE_URL=postgres://USERNAME:PASSWORD@HOST:PORT/DBNAME
 SECRET_KEY='abcd1234'
-LAND_AVAILABILITY_API_URL=http://localhost:8001
+LAND_AVAILABILITY_API_URL=http://localhost:8000
 LAND_AVAILABILITY_API_TOKEN=abcd1234
 ```
 

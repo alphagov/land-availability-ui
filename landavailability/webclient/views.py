@@ -56,6 +56,7 @@ class SearchView(TemplateView):
                       url, ex)
             messages.add_message(request, messages.ERROR,
                                  generic_error_msg)
+            return self.render_to_response(context)
 
         if response.status_code == requests.codes.ok:
             try:
@@ -71,7 +72,7 @@ class SearchView(TemplateView):
                       response.url, response.text)
             messages.add_message(request, messages.ERROR, generic_error_msg)
 
-        # TODO Get 'count' out of the API
+        # TODO count, page
         return self.render_to_response(context)
 
 
