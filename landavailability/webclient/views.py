@@ -32,24 +32,27 @@ class SearchView(TemplateView):
         headers = {
             'Authorization': 'Token {0}'.format(
                 settings.LAND_AVAILABILITY_API_TOKEN)}
-        url = '{0}/api/locations/'.format(
+        url = '{0}/api/location-search'.format(
             settings.LAND_AVAILABILITY_API_URL)
         generic_error_msg = 'There was a problem. The admins have been ' \
             'notified. Please try again later.'
 
+        params = {
+            'build': request.GET.get('build'),
+            'pupils': request.GET.get('pupils'),
+            'post16pupils': request.GET.get('post16pupils'),
+        }
+        if polygon:
+            params['polygon'] = polygon
+        else:
+            params['postcode'] = postcode
+            params['range_distance'] = range_distance
+
         try:
-            if polygon:
-                response = requests.get(
-                    url,
-                    params={'polygon': polygon},
-                    headers=headers)
-            else:
-                response = requests.get(
-                    url,
-                    params={
-                        'postcode': postcode,
-                        'range_distance': range_distance},
-                    headers=headers)
+            response = requests.get(
+                url,
+                params=params,
+                headers=headers)
 
         except Exception as ex:
             log.error('Problem connecting to url %s: %s',

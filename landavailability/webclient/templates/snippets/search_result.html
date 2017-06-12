@@ -6,15 +6,15 @@
     <div>
         <div><span class="bold-small">Owner:</span> {{detail.owner}}</div>
     </div>
-    {% if detail.geoattributes.AREA %}
+    {% if detail.site_size %}
     <div>
         <div><span class="bold-small">Site size:</span>
-            {{detail.geoattributes.AREA}} m&sup2;</div>
+            {{detail.site_size|floatformat:"0"}} m&sup2;</div>
     </div>
     {% endif %}
     <div>
         <div><span class="bold-small">Estimated floor space:</span>
-        {{ detail.geoattributes.FLOORSPACE}}  m&sup2;</div>
+        {{ detail.estimated_floor_space|floatformat:"0" }}  m&sup2;</div>
     </div>
 
 {% if not detail.area_suitable %}
@@ -25,16 +25,16 @@
   </i>
   <div class="explanation">
     <h4 class="bold-small">
-      {% if detail.geoattributes.FLOORSPACE <  detail.lower_site_req %}
+      {% if detail.estimated_floor_space < lower_site_req %}
         This location is too small
       {% endif %}
-      {% if detail.geoattributes.FLOORSPACE >  detail.upper_site_req %}
+      {% if detail.estimated_floor_space > upper_site_req %}
         This location is too large
       {% endif %}
     </h4>
     <p>It is estimated that for your requirements the floorspace available
-       should be between {{ detail.lower_site_req }}m&sup2;and
-       {{ detail.upper_site_req }}m&sup2;</p>
+       should be between {{ lower_site_req|floatformat:"0" }}m&sup2;and
+       {{ upper_site_req|floatformat:"0" }}m&sup2;</p>
   </div>
 </div>
 <br/>
