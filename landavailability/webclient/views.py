@@ -32,7 +32,7 @@ class SearchView(TemplateView):
         headers = {
             'Authorization': 'Token {0}'.format(
                 settings.LAND_AVAILABILITY_API_TOKEN)}
-        url = '{0}/api/location-search'.format(
+        url = '{0}/api/locations/'.format(
             settings.LAND_AVAILABILITY_API_URL)
         generic_error_msg = 'There was a problem. The admins have been ' \
             'notified. Please try again later.'
