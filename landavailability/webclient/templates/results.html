@@ -58,11 +58,11 @@
 
               <div class="column-two-thirds">
 
-                {% if results %}
+                {% if results.locations %}
                 <ul class="list">
-                  {% for result in results %}
+                  {% for result in results.locations %}
                   <li>
-                      {% include "snippets/search_result.html" with detail=result loop_index=forloop.counter only %}
+                      {% include "snippets/search_result.html" with detail=result loop_index=forloop.counter lower_site_req=results.lower_site_req upper_site_req=results.upper_site_req only %}
                   </li>
                   {% empty %}
                     <p>No results were found, either expand the search area or <a href="/?edit">change your search</a></p>
