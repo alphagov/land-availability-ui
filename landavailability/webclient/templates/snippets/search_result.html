@@ -4,8 +4,13 @@
     <h4 class="heading-small"><a href="/locations/{{detail.uprn}}">{{detail.name}} {% if detail.address %}, {{detail.address}} {% endif %} {% if detail.postcode %},{% endif %} {{detail.postcode }} </a></h4>
 
     <div>
+        <div><span class="bold-small">Address:</span> {{detail.full_address}}</div>
+    </div>
+    {% if detail.owner %}
+    <div>
         <div><span class="bold-small">Owner:</span> {{detail.owner}}</div>
     </div>
+    {% endif %}
     {% if detail.site_size %}
     <div>
         <div><span class="bold-small">Site size:</span>
@@ -24,17 +29,19 @@
     <span class="visuallyhidden">Warning</span>
   </i>
   <div class="explanation">
+    <!-- "<"" doesn't work with the "."" operator in Django templates
     <h4 class="bold-small">
-      {% if detail.estimated_floor_space < lower_site_req %}
+          {% if detail.estimated_floor_space < lower_site_req %}
         This location is too small
       {% endif %}
       {% if detail.estimated_floor_space > upper_site_req %}
         This location is too large
       {% endif %}
     </h4>
-    <p>It is estimated that for your requirements the floorspace available
-       should be between {{ lower_site_req|floatformat:"0" }}m&sup2;and
-       {{ upper_site_req|floatformat:"0" }}m&sup2;</p>
+    -->
+    <p>This location is not a suitable size for your requirements. It is estimated that the floorspace
+       should be between {{ lower_site_req|floatformat:"0" }} m&sup2; and
+       {{ upper_site_req|floatformat:"0" }} m&sup2;.</p>
   </div>
 </div>
 <br/>

@@ -64,7 +64,7 @@ Find available sites
 
 
                 <label class="xblock-label" for="pupils-50">
-                    <input id="pupils-50" name="pupils" type="text" value="{% if terms.pupils %}{{terms.pupils}}{% endif %}"
+                    <input id="pupils-50" name="pupils" type="text" value="250"
                         class="form-control">
                 </label>
             </fieldset>
@@ -90,9 +90,10 @@ Find available sites
             <fieldset>
                 <legend class="visuallyhidden">In what location?</legend>
                 <span class="form-hint">
-                    Enter postcode, town or city<span class='geolocation_span hide-nojs' style='display:none;'> or <a href="#" class="geolocator inl-block hide-nojs" id="getLocation">use current location</a></span>
+                    Enter postcode, town, city or <span style="font-weight: bold;">draw an area on the map</span><span class='geolocation_span hide-nojs' style='display:none;'>
+                    <!-- or <a href="#" class="geolocator inl-block hide-nojs" id="getLocation">use current location</a></span>-->
                 </span>
-                <input class="form-control" id="location" name="location" type="text" value="{{ terms.location}}">
+                <input class="form-control" id="location" name="location" type="text" value="{{ terms.location}}" disabled=disabled>
             </fieldset>
 
             <div id="map" style="height: 300px; margin-top: 20px; margin-bottom: 20px;"></div>
@@ -138,6 +139,7 @@ Find available sites
 
 </div>
 
+<!--
 <hr/>
 
 <div class="grid-row">
@@ -180,7 +182,7 @@ Find available sites
       {% endfor %}
       </dl>
   </div>
-
+-->
  <script>
     (function($) {
         $('#radio-primary').on('change', function() {
