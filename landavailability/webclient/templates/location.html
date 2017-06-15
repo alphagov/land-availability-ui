@@ -41,19 +41,28 @@
   <div class="column-two-thirds">
 
       <div>
-        <h4 class="bold-small">Full address</h4>
-        <p>{{ location.name }}{% if location.address %}, {{ location.address }}{% endif %}{% if location.postcode %}, {{ location.postcode }}{% endif %}</p>
+        <h4 class="bold-small">Company Name</h4>
+        <p>{{ location.name }}</p>
       </div>
+
+      {% if location.full_address %}
+      <div>
+        <h4 class="bold-small">Address</h4>
+        <p>{{ location.full_address }}</p>
+      </div>
+      {% endif %}
 
       <div>
         <h4 class="bold-small">Local Authority</h4>
         <p>{{ location.authority }}</p>
       </div>
 
+      {% if location.owner %}
       <div>
         <h4 class="bold-small">Owner</h4>
         <p> {{ location.owner}} </p>
       </div>
+      {% endif %}
 
       {% if location.site_size %}
       <div>
@@ -126,7 +135,7 @@
       <div>
         <h4 class="bold-small">Nearest secondary school</h4>
         {% if location.nearest_secondary_school_distance  %}
-          <p>{{ location.nearest_secondary_school_distance }} miles</p>
+          <p>{{ location.nearest_secondary_school_distance|floatformat:"0" }} metres</p>
         {% else %}
           <p>None within 1km </p>
         {% endif %}
@@ -135,7 +144,7 @@
       <div>
         <h4 class="bold-small">Nearest primary school</h4>
         {% if location.nearest_primary_school_distance  %}
-          <p>{{ location.nearest_primary_school_distance }} miles</p>
+          <p>{{ location.nearest_primary_school_distance|floatformat:"0" }} metres</p>
         {% else %}
           <p>None within 1km</p>
         {% endif %}
@@ -144,7 +153,7 @@
       <div>
         <h4 class="bold-small">Nearest metro station</h4>
         {% if location.nearest_metrotube_distance  %}
-          <p>{{ location.nearest_metrotube_distance }} miles</p>
+          <p>{{ location.nearest_metrotube_distance|floatformat:"0" }} metres</p>
         {% else %}
           <p>None within 1km</p>
         {% endif %}
@@ -153,7 +162,7 @@
       <div>
         <h4 class="bold-small">Nearest railway station</h4>
         {% if location.nearest_trainstop_distance  %}
-          <p>{{ location.nearest_trainstop_distance }} miles</p>
+          <p>{{ location.nearest_trainstop_distance|floatformat:"0" }} metres</p>
         {% else %}
           <p>None within 1km</p>
         {% endif %}
@@ -162,16 +171,16 @@
       <div>
         <h4 class="bold-small">Nearest motorway junction</h4>
         {% if location.nearest_motorway_distance  %}
-          <p>{{ location.nearest_motorway_distance }} miles</p>
+          <p>{{ location.nearest_motorway_distance|floatformat:"0" }} metres</p>
         {% else %}
-          <p>None within 1km</p>
+          <p>None within 6km</p>
         {% endif %}
       </div>
 
       <div>
         <h4 class="bold-small">Nearest bus stop</h4>
         {% if location.nearest_busstop_distance  %}
-          <p>{{ location.nearest_busstop_distance }} miles</p>
+          <p>{{ location.nearest_busstop_distance|floatformat:"0" }} metres</p>
         {% else %}
           <p>None within 1km</p>
         {% endif %}
@@ -180,18 +189,18 @@
       <div>
         <h4 class="bold-small">Nearest overhead line</h4>
         {% if location.nearest_ohl_distance  %}
-          <p>{{ location.nearest_ohl_distance }} miles</p>
+          <p>{{ location.nearest_ohl_distance|floatformat:"0" }} metres</p>
         {% else %}
-          <p>None within 1km</p>
+          <p>None within 3km</p>
         {% endif %}
       </div>
 
       <div>
-        <h4 class="bold-small">Nearest substation</h4>
-        {% if location.nearest_substation_distance  %}
-          <p>{{ location.nearest_substation_distance }} miles</p>
+        <h4 class="bold-small">Nearest broadband</h4>
+        {% if location.nearest_broadband_distance  %}
+          <p>{{ location.nearest_broadband_distance|floatformat:"0" }} metres</p>
         {% else %}
-          <p>None within 1km</p>
+          <p>None within 500m</p>
         {% endif %}
       </div>
 </div>
