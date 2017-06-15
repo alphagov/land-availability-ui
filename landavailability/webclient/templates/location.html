@@ -58,14 +58,14 @@
       {% if location.site_size %}
       <div>
         <h4 class="bold-small">Site size</h4>
-        <p>{{ location.site_size }} m&sup2;
+        <p>{{ location.site_size|floatformat:"0" }} m&sup2;
         </p>
       </div>
       {% endif %}
 
       <div>
-        <h4 class="bold-small">Estimated floor space (2 floors)</h4>
-        <p>{{ location.estimated_floor_space }} m&sup2;
+        <h4 class="bold-small">Estimated floor space</h4>
+        <p>{{ location.estimated_floor_space|floatformat:"0" }} m&sup2;
         </p>
       </div>
 
@@ -124,38 +124,75 @@
   </div>
   <div class="column-two-thirds">
       <div>
-        <h4 class="bold-small">Nearest school</h4>
-        <p>{{ location.nearest_school_distance }} miles</p>
+        <h4 class="bold-small">Nearest secondary school</h4>
+        {% if location.nearest_secondary_school_distance  %}
+          <p>{{ location.nearest_secondary_school_distance }} miles</p>
+        {% else %}
+          <p>None within 1km</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <h4 class="bold-small">Nearest primary school</h4>
+        {% if location.nearest_primary_school_distance  %}
+          <p>{{ location.nearest_primary_school_distance }} miles</p>
+        {% else %}
+          <p>None within 1km</p>
+        {% endif %}
       </div>
 
       <div>
         <h4 class="bold-small">Nearest metro station</h4>
-        <p>{{ location.nearest_metrotube_distance }} miles</p>
+        {% if location.nearest_metrotube_distance  %}
+          <p>{{ location.nearest_metrotube_distance }} miles</p>
+        {% else %}
+          <p>None within 1km</p>
+        {% endif %}
       </div>
 
       <div>
         <h4 class="bold-small">Nearest railway station</h4>
-        <p>{{ location.nearest_trainstop_distance }} miles</p>
+        {% if location.nearest_trainstop_distance  %}
+          <p>{{ location.nearest_trainstop_distance }} miles</p>
+        {% else %}
+          <p>None within 1km</p>
+        {% endif %}
       </div>
 
       <div>
         <h4 class="bold-small">Nearest motorway junction</h4>
-        <p>{{ location.nearest_motorway_distance }} miles</p>
+        {% if location.nearest_motorway_distance  %}
+          <p>{{ location.nearest_motorway_distance }} miles</p>
+        {% else %}
+          <p>None within 1km</p>
+        {% endif %}
       </div>
 
       <div>
         <h4 class="bold-small">Nearest bus stop</h4>
-        <p>{{ location.nearest_busstop_distance }} miles</p>
+        {% if location.nearest_busstop_distance  %}
+          <p>{{ location.nearest_busstop_distance }} miles</p>
+        {% else %}
+          <p>None within 1km</p>
+        {% endif %}
       </div>
 
       <div>
         <h4 class="bold-small">Nearest overhead line</h4>
-        <p>{{ location.nearest_ohl_distance }} miles</p>
+        {% if location.nearest_ohl_distance  %}
+          <p>{{ location.nearest_ohl_distance }} miles</p>
+        {% else %}
+          <p>None within 1km</p>
+        {% endif %}
       </div>
 
       <div>
         <h4 class="bold-small">Nearest substation</h4>
-        <p>{{ location.nearest_substation_distance }} miles</p>
+        {% if location.nearest_substation_distance  %}
+          <p>{{ location.nearest_substation_distance }} miles</p>
+        {% else %}
+          <p>None within 1km</p>
+        {% endif %}
       </div>
 </div>
 
