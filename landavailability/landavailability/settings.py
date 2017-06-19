@@ -52,6 +52,10 @@ INSTALLED_APPS = [
     'webclient',
 ]
 
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -62,6 +66,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'landavailability.urls'
 
@@ -145,3 +152,6 @@ LAND_AVAILABILITY_API_URL = get_env_variable('LAND_AVAILABILITY_API_URL')
 assert not LAND_AVAILABILITY_API_URL.endswith('/'), \
     'LAND_AVAILABILITY_API_URL should not have a trailing slash'
 LAND_AVAILABILITY_API_TOKEN = get_env_variable('LAND_AVAILABILITY_API_TOKEN')
+
+# for debug toolbar
+INTERNAL_IPS = ['127.0.0.1']
