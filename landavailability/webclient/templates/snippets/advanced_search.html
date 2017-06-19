@@ -1,13 +1,20 @@
 
   <form action="/search" method="GET">
 
+    {% comment %}
+      The distance field isn't relevant when the user specifies a polygon. Since that's the
+      only field in the form (at the moment), hide the whole form if user specifies a polygon.
+    {% endcomment %}
+    {% if request.GET.location %}
         <div class="form-group">
+
             <label class="form-label bold-xsmall" for="distance">Expand search area</label>
             <select name="center_distance" class='form-control' style="width:90%" >
                <option value="1" {%if terms.center_distance == "1"%}selected{%endif%}>Within 1 mile</option>
                <option value="3" {%if terms.center_distance == "3"%}selected{%endif%}>Within 3 miles</option>
-               <option value="5" {%if terms.center_distance == "5"%}selected{% endif%}>Within 5 miles</option>
+               <option value="5" {%if terms.center_distance == "5"%}selected{%endif%}>Within 5 miles</option>
             </select>
+
         </div>
 
 
@@ -19,5 +26,5 @@
           <div class="form-group">
             <input class="button" type="submit" value="Update results">
           </div>
-
+    {% endif %}
   </form>
