@@ -10,11 +10,13 @@
   <a style="float:right;" class="link-forward" href="/s/{{share_key}}" target="blank">Share this search</a>
 </div>
 
-{% if count != None %}
-<h1 class="bold-xlarge">
-  {{count}} suitable sites found
-</h1>
-{% endif %}
+{% with count=results.locations|length %}
+  {% if count != None %}
+  <h1 class="bold-xlarge">
+    {{count}} site{{ count|pluralize }} found
+  </h1>
+  {% endif %}
+{% endwith %}
 
 {% if messages %}
 <ul class="messages">
