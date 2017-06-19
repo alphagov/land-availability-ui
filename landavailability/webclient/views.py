@@ -59,6 +59,7 @@ class SearchView(TemplateView):
                       url, ex)
             messages.add_message(request, messages.ERROR,
                                  generic_error_msg)
+            return render(request, 'error.html', context=context)
             return self.render_to_response(context)
 
         if response.status_code == requests.codes.ok:
@@ -69,6 +70,7 @@ class SearchView(TemplateView):
                           response.url, response.text)
                 messages.add_message(request, messages.ERROR,
                                      generic_error_msg)
+                return render(request, 'error.html', context=context)
             context['terms'] = request.GET
         elif response.status_code == 400 and response.text == '"The given ' \
                 'postcode is not available in CodePoints"':
@@ -79,6 +81,7 @@ class SearchView(TemplateView):
             log.error('Bad status querying url %s: %s',
                       response.url, response.text)
             messages.add_message(request, messages.ERROR, generic_error_msg)
+            return render(request, 'error.html', context=context)
 
         # TODO count, page
         return self.render_to_response(context)
