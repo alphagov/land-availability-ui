@@ -70,6 +70,11 @@ class SearchView(TemplateView):
                 messages.add_message(request, messages.ERROR,
                                      generic_error_msg)
             context['terms'] = request.GET
+        elif response.status_code == 400 and response.text == '"The given ' \
+                'postcode is not available in CodePoints"':
+            messages.add_message(request, messages.ERROR,
+                                 'That postcode is not found')
+            return render(request, 'error.html', context=context)
         else:
             log.error('Bad status querying url %s: %s',
                       response.url, response.text)
