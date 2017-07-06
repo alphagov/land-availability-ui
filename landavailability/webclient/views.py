@@ -18,7 +18,7 @@ class SearchView(TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
 
-        postcode = request.GET.get('location')
+        postcode = request.GET.get('location') or request.GET.get('postcode')
         center_distance = request.GET.get('center_distance')
         polygon = request.GET.get('polygon')
 
@@ -44,9 +44,13 @@ class SearchView(TemplateView):
         }
         if polygon:
             params['polygon'] = polygon
-        else:
+        elif postcode and range_distance:
             params['postcode'] = postcode
             params['range_distance'] = range_distance
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 'You need to specify a location')
+            return render(request, 'error.html', context=context)
 
         try:
             response = requests.get(
