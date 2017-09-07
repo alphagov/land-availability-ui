@@ -593,7 +593,7 @@ p {
   color: #0b0c0c;
   text-decoration: none;
   border-bottom: 1px solid #0b0c0c;
-  background: url("/static/images/icon-arrow-left.png") no-repeat 0 4px;
+  background: url("/static/images/icons/icon-arrow-left.png") no-repeat 0 4px;
 }
 
 .link-back:link, .link-back:visited, .link-back:hover, .link-back:active {
@@ -1575,7 +1575,7 @@ input[type=number] {
   font-size: 16px;
   line-height: 1.25;
   float: left;
-  background-image: url("/static/images/separator.png");
+  background-image: url("/static/images/icons/separator.png");
   background-position: 0% 50%;
   background-repeat: no-repeat;
   list-style: none;
@@ -1586,7 +1586,7 @@ input[type=number] {
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .breadcrumbs li {
-    background-image: url("/static/images/separator-2x.png");
+    background-image: url("/static/images/icons/separator-2x.png");
     background-size: 6px 11px;
   }
 }

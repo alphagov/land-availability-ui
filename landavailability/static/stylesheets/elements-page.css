@@ -1826,7 +1826,7 @@ input[type=number] {
   font-weight: 400;
   text-transform: none;
   float: left;
-  background-image: url("/static/images/separator.png");
+  background-image: url("/static/images/icons/separator.png");
   background-position: 0% 50%;
   background-repeat: no-repeat;
   list-style: none;
@@ -1844,7 +1844,7 @@ input[type=number] {
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .breadcrumbs li {
-    background-image: url("/static/images/separator-2x.png");
+    background-image: url("/static/images/icons/separator-2x.png");
     background-size: 6px 11px;
   }
 }
@@ -2097,15 +2097,6 @@ input[type=number] {
 
 .example .list-bullet {
   margin-bottom: 20px;
-}
-
-.example-grid p {
-  width: 100%;
-  background: url("/static/images/examples/grid.png") 0 0 repeat;
-  margin-bottom: 0;
-  height: 30px;
-  overflow: hidden;
-  text-indent: -999em;
 }
 
 @media (min-width: 641px) {
